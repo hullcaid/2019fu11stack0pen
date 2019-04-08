@@ -13,35 +13,10 @@ const Button =({ handleClick, text}) => (
 		</button>
 )
 
-const Statistic =({text, value}) => (
-	<div>{text} {value}</div>
-)
-
-const Sum = ({amount, text}) => (
-	<div>{text} {amount}</div>
-)
-
-const Average = ({good, bad, total, text}) => {
-	let average = 0
-	if (total >0) {
-		average = (good-bad)/total
-	}
-	return (
-	<div>
-		{text} {average}
-	</div>
-	)
-}
-
-const Positive = ({good, total, text}) => {
-	let positives = 0
-	if(total > 0) {
-		positives = (good / total) *100
-	}
+const Statistic =({text, value}) => {
+	console.log(text, value)
 	return(
-		<div>
-			{text} {positives} %
-		</div>
+	<div>{text} {value}</div>
 	)
 }
 
@@ -74,6 +49,27 @@ const App = () => {
 		setTotal(total + 1)
 	}
 
+	const average = () => {
+		if(total > 0){
+			return (
+				(good - bad)/ total
+			)
+		} else {
+			return (0)
+		}
+	}
+
+	const positives = () =>{
+		if (total > 0){
+			const pos = (good / total)*100
+			return (
+				pos+ ' %'
+			)
+		} else {
+			return (0+ ' %')
+		}
+	}
+
 	return (
 	  <div>
 			<Header text='anna palautetta' />
@@ -85,8 +81,8 @@ const App = () => {
 			<Statistic value={neutral} text={neutralLabel} />
 			<Statistic value={bad} text={badLabel} />
 			<Statistic value={total} text={totalLabel} />
-			<Statistic value={good-bad/total}  text={averageLabel} />
-			<Positive good={good} total={total} text={positiveLabel} />
+			<Statistic value={average()}  text={averageLabel} />
+			<Statistic value={positives()} text={positiveLabel} />
 	  </div>
 	)
   }
