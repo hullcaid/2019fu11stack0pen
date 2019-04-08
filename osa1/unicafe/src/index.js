@@ -13,6 +13,10 @@ const Button =({ handleClick, text}) => (
 		</button>
 )
 
+const Statistic =({text, value}) => (
+	<div>{text} {value}</div>
+)
+
 const Sum = ({amount, text}) => (
 	<div>{text} {amount}</div>
 )
@@ -77,11 +81,11 @@ const App = () => {
 			<Button handleClick={handleNeutral} text={neutralLabel} />
 			<Button handleClick={handleBad} text={badLabel} />
 			<Header text='statistiikka' />
-			<Sum amount={good} text={goodLabel} />
-			<Sum amount={neutral} text={neutralLabel} />
-			<Sum amount={bad} text={badLabel} />
-			<Sum amount={total} text={totalLabel} />
-			<Average good={good} bad={bad} total={total} text={averageLabel} />
+			<Statistic value={good} text={goodLabel} />
+			<Statistic value={neutral} text={neutralLabel} />
+			<Statistic value={bad} text={badLabel} />
+			<Statistic value={total} text={totalLabel} />
+			<Statistic value={good-bad/total}  text={averageLabel} />
 			<Positive good={good} total={total} text={positiveLabel} />
 	  </div>
 	)
