@@ -16,7 +16,10 @@ const Button =({ handleClick, text}) => (
 const Statistic =({text, value}) => {
 	console.log(text, value)
 	return(
-	<div>{text} {value}</div>
+	<tr>
+		<td>{text}</td>
+		<td> {value}</td>
+	</tr>
 	)
 }
 
@@ -27,14 +30,14 @@ const Statistics = ({good, neutral, bad, total}) => {
 		)
 	}
 	return(
-		<div>
+		<tbody>
 			<Statistic value={good} text='hyvä' />
 			<Statistic value={neutral} text='neutraali' />
 			<Statistic value={bad} text='huono' />
 			<Statistic value={total} text='yhteensä' />
 			<Statistic value={(good-bad)/total}  text='keskiarvo' />
 			<Statistic value={(good / total *100 + ' %')} text='positiivisia' />
-		</div>
+		</tbody>
 	)
 }
 
@@ -77,15 +80,17 @@ const App = () => {
 			</div>
 		)
 	} 
-	return(<div>
-		<Header text='anna palautetta' />
-		<Button handleClick={handleGood} text={goodLabel} />
-		<Button handleClick={handleNeutral} text={neutralLabel} />
-		<Button handleClick={handleBad} text={badLabel} />
-		<Header text='statistiikka' />
-		<Statistics good={good} neutral={neutral} bad={bad} total={total}/>
-
-	</div>
+	return(
+		<div>
+			<Header text='anna palautetta' />
+			<Button handleClick={handleGood} text={goodLabel} />
+			<Button handleClick={handleNeutral} text={neutralLabel} />
+			<Button handleClick={handleBad} text={badLabel} />
+			<Header text='statistiikka' />
+			<table>
+				<Statistics good={good} neutral={neutral} bad={bad} total={total}/>
+			</table>
+		</div>		
 	)
 }
 
