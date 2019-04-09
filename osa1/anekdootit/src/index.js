@@ -15,12 +15,15 @@ const Votes = ({amount}) => (
 	<div>has {amount} votes</div>
 ) 
 
+const Header = ({text}) => (
+	<h1>{text}</h1>
+)
+
 const App = (props) => {
 	const [selected, setSelected] = useState(0)
 	const [points, setPoints] = useState(Array.apply(null, new Array(props.anecdotes.length)).map(Number.prototype.valueOf,0))
 
-	//const points = Array.apply(null, new Array(props.anecdotes.length)).map(Number.prototype.valueOf,0)
-	console.log(points)
+	//console.log(points)
 
 	const random = () => {
 		var min=0; 
@@ -31,18 +34,23 @@ const App = (props) => {
 	}
 	
 	const vote = (selected) => {
-		console.log(selected)
-		const copy ={ ...points}
+		const copy =[ ...points]
 		copy[selected] += 1
 		setPoints(copy)
 	}
-	
+
+	//console.log('Isoins piste',Math.max(...points))
+	console.log('lokaatio',points.indexOf(Math.max(...points)))
 	return (
 	  <div>
+		<Header text='Anecdote of the day' />
 		<Anecdote text={props.anecdotes[selected]} />
 		<Votes amount={points[selected]} />
 		<Button text='vote' handleClick={()=> vote(selected)} />
 		<Button text='next anecdote' handleClick={() => random()} />
+		<Header text='Anecdote with most votes'/>
+		<Anecdote text={props.anecdotes[points.indexOf(Math.max(...points))]}/>
+		<Votes amount={points[points.indexOf(Math.max(...points))]}/>
 		
 	  </div>
 	)
