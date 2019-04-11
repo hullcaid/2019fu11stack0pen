@@ -23,9 +23,9 @@ const Part = (props) => {
 const Total =({ parts }) => {
 	console.log('Laskuriin tuleva:', parts)
 	const exercises = parts.map(part => part.exercises)
-	console.log('harjoitusmäärät', exercises)
+	console.log('harjoitusmäärät:', exercises)
 	const sum = exercises.reduce((accumulator, currentValue) => {
-		console.log(accumulator,currentValue)
+		console.log('akkumulaattori:', accumulator, 'nykyinen arvo:',currentValue)
 		return (accumulator+currentValue)
 	})
 	return(
@@ -34,6 +34,7 @@ const Total =({ parts }) => {
 }
 
 const Course = ({course}) => {
+	console.log('huhuuu')
 	console.log(course)
 	
 	return(
