@@ -21,6 +21,11 @@ const App = () => {
 		  name: 'Komponenttien tila',
 		  exercises: 14,
 		  id: 3
+		},
+		{
+		  name: 'ploo',
+		  exercises: 44,
+		  id: 4
 		}
 	  ]
 	}
