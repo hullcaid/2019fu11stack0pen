@@ -34,7 +34,6 @@ const Total =({ parts }) => {
 }
 
 const Course = ({course}) => {
-	console.log('huhuuu')
 	console.log(course)
 	
 	return(
