@@ -13,14 +13,27 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault()
-    console.log('Nappi painettu')
-    console.log(newName)
-    const personObject = {
-     name: newName,
+    console.log('Nappi painettu, lisätävä nimi:', newName)
+    let exists = false
+    
+    persons.forEach((person) => {
+      console.log('tarkistetaan', person.name)
+      if (newName === person.name){
+        window.alert(`${newName} on jo listassa`)
+        exists = true
+      }
+    } )
+    
+    if(!exists) {
+      const personObject = {
+        name: newName,
+      }
+      
+      console.log(personObject)
+      
+      setPersons(persons.concat(personObject))
+      setNewName('')
     }
-    console.log(personObject)
-    setPersons(persons.concat(personObject))
-    setNewName('')
   }
 
   const Listing = ({person}) => <li>{person.name}</li>
@@ -45,7 +58,6 @@ const App = () => {
       </form>
       <h2>Numerot</h2>
       {rows()}
-      <div>debug: {newName}</div>
     </div>
   )
 
