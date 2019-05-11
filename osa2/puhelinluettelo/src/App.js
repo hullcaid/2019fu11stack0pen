@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import axios from 'axios'
+import personService from './services/entries'
 
 const App = () => {
   const [ persons, setPersons] = useState([]) 
@@ -11,15 +11,13 @@ const App = () => {
   const [ filter, setNewFilter ] = useState('')
 
   useEffect(()=> {
-    console.log('effect')
+    console.log('Effect: getting initial data')
 
-    const eventHandler = response => {
-      console.log('promise fulfilled')
-      setPersons(response.data)
-    }
-
-    const promise = axios.get('http://localhost:3001/persons')
-    promise.then(eventHandler)
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
+      })
   }, [])
 
   const handleNameChange = (event) =>{
@@ -57,12 +55,15 @@ const App = () => {
       }
       
       console.log(personObject)
-      
-      setPersons(persons.concat(personObject))
-      setNewName('')
-      setNewNumber('')
+      personService
+        .create(personObject)
+        .then(returnedPerson =>{
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+          setNewNumber('')
+        })
+      }
     }
-  }
 
   const Listing = ({person}) => <li>{person.name} {person.number}</li>
 
