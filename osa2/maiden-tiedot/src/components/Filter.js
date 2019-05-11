@@ -1,5 +1,6 @@
 import React from 'react'
 
+// Filtterielementti
 const Filter = ({filter, handleFilterChange}) => (
 	<div>
 		find countries <input value={filter} onChange={handleFilterChange}/>

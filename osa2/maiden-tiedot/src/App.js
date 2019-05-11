@@ -2,11 +2,15 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios'
 
 import Filter from './components/Filter'
+import CountryInfo from './components/CountryInfo'
+import Listing from './components/Listing'
+
 
 function App() {
   const [countries, setCountries] = useState([])
   const [filter, setNewFilter] = useState('')
 
+  //Datan hakeminen
   useEffect(()=> {
     console.log('effect')
     axios
@@ -17,54 +21,47 @@ function App() {
       })
   }, [])
   console.log(countries)
-    
+  
+  //Filterin tilamuutosten käsittely
   const handleFilterChange = (event) => {
+    console.log(event.target.value)
     setNewFilter(event.target.value)
   }
   
-  const CountryInfo =({country}) => {
-    const listing=() =>(
-      country.languages.map(language =>
-        <Listing key={language.iso639_1} item={language.name}/>)
-    )
-    return(
-      <div>
-        <h1>{country.name}</h1>
-        <div>Capital: {country.capital}</div>
-        <div>Population: {country.population}</div>
-        <h2>Languages:</h2>
-        <div>{listing()}</div>
-        <div>
-          <div>
-            <img src={country.flag} height='72' alt='flag'/>
-          </div>
-        </div>
-      </div>
-    )
-  }
+  //Maalistan nappulan painaminen
+  const handleButtonClick = ({name}) => {
+    console.log('button pressed', name)
+    setNewFilter(name)
+  }  
 
-  const Listing = ({item}) => <li>{item}</li>
-
+  //Filteröidyn maalistan luominen
   const filteredList = filter.length >0 ? countries.filter(country =>country.name.toLowerCase().includes(filter.toLowerCase()) ):countries
-
+  
+  //Näytettävien tulosten käsittely
   const results = () => {
+    //Tapaus: Liian monta osumaa
     if (filteredList.length >10){
       return(
         <div>Too many matches. specify another filter</div>
       )
     }
+    //Tapaus: alle 10, mutta yli 1 osuma, listataan osumat
     else if (filteredList.length >1) {
+      console.log('aloitetaan listaus')
       return(
+        //Kääydään filteröity lista läpi ja piirretään jokaiselle objektille oma nimi-nappula-komponentti
         filteredList.map(country => 
-          <Listing key={country.alpha3Code} item={country.name}/>
+          <Listing key={country.alpha3Code} item={country.name} showButton={true} handleButtonClick={handleButtonClick} />
       )) 
     }
+    //Tapaus: yksi osuma, näytetään maan tiedot
     else if (filteredList.length === 1){
       console.log(filteredList[0])
       return(
         <CountryInfo country={filteredList[0]}/>
       )
     }
+    //Tapaus: ei osumia
     else {
       return(
         <div>No mathces, try again</div>
@@ -72,16 +69,13 @@ function App() {
     }
   }
 
-  const Results = ({items}) => {
-    return(
-      <div>{items}</div>
-    )}
-
+  //Appin renderöinti
   return(
     <div>
       <Filter filter={filter} handleFilterChange={handleFilterChange}/>
-      <Results items={results()}/>
+      <div>{results()}</div>
     </div>
+ 
   )
 }
 
