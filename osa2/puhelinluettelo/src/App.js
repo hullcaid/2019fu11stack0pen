@@ -65,7 +65,8 @@ const App = () => {
       }
     }
 
-  const Listing = ({person}) => <li>{person.name} {person.number}</li>
+  //lisää poistonappula ja handleri
+    const Listing = ({person}) => <li>{person.name} {person.number}</li>
 
   const filteredList = filter.length >0 ? persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()) ) : persons
 
