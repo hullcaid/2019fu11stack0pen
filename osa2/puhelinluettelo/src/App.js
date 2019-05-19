@@ -40,20 +40,34 @@ const App = () => {
     event.preventDefault()
     console.log('Add button pressed, name to be added:', newName)
     let exists = false
-    
+    const personObject = {
+      name: newName,
+      number: newNumber,
+    }
+
     persons.forEach((person) => {
       console.log('tarkistetaan', person.name)
       if (newName === person.name){
-        window.alert(`${newName} on jo listassa`)
+        if(window.confirm(`${newName} on jo luettelossa, korvataanko vanha numero uudella?`)){
+          const newData = personObject
+          personService
+            .modify(person.id, newData)
+            .then(returnedPerson =>{
+              setPersons(persons.map(entry =>{
+                if(entry.id === returnedPerson.id){
+                  return(returnedPerson)
+                }
+                else{
+                  return(entry)
+                }
+              }))
+            })
+        }
         exists = true
       }
     } )
     
     if(!exists) {
-      const personObject = {
-        name: newName,
-        number: newNumber,
-      }
       
       console.log('Adding to database: ',personObject)
       personService
@@ -72,7 +86,7 @@ const App = () => {
       personService
         .remove(person.id)
         .then(returnedId =>{
-          setPersons(persons.filter(person => person.id != returnedId))
+          setPersons(persons.filter(person => person.id !== returnedId))
         })
     }
     

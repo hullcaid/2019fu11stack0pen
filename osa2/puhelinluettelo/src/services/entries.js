@@ -19,4 +19,10 @@ const remove = oldObject => {
 	return request.then(response => oldObject)
 }
 
-export default {getAll, create, remove}
+const modify = (oldObject, newData) => {
+	console.log('Modifying old entry', oldObject, newData);
+	const request = axios.put(`${baseUrl}/${oldObject}`, newData)
+	return request.then(response => response.data)
+}
+
+export default {getAll, create, remove, modify}
