@@ -3,6 +3,7 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import personService from './services/entries'
+import RemoveButton from './components/RemoveButton'
 
 const App = () => {
   const [ persons, setPersons] = useState([]) 
@@ -37,7 +38,7 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault()
-    console.log('Nappi painettu, lisätävä nimi:', newName)
+    console.log('Add button pressed, name to be added:', newName)
     let exists = false
     
     persons.forEach((person) => {
@@ -54,7 +55,7 @@ const App = () => {
         number: newNumber,
       }
       
-      console.log(personObject)
+      console.log('Adding to database: ',personObject)
       personService
         .create(personObject)
         .then(returnedPerson =>{
@@ -65,8 +66,19 @@ const App = () => {
       }
     }
 
-  //lisää poistonappula ja handleri
-    const Listing = ({person}) => <li>{person.name} {person.number}</li>
+  const removeName = ({person})=>{
+    if (window.confirm(`Poistetaanko ${person.name}?`)){
+      console.log("Removing from database: ", person.id)
+      personService
+        .remove(person.id)
+        .then(returnedId =>{
+          setPersons(persons.filter(person => person.id != returnedId))
+        })
+    }
+    
+  }
+
+  const Listing = ({person}) => <li>{person.name} {person.number} <RemoveButton person={person} removeName={removeName}></RemoveButton></li>
 
   const filteredList = filter.length >0 ? persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()) ) : persons
 

@@ -15,8 +15,8 @@ const create = newObject => {
 
 const remove = oldObject => {
 	console.log('removing old entry')
-	const request = axios.delete(baseUrl, oldObject)
-	return request.then(response => response.data)
+	const request = axios.delete(baseUrl +'/'+ oldObject)
+	return request.then(response => oldObject)
 }
 
 export default {getAll, create, remove}
