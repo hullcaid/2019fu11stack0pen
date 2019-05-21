@@ -4,12 +4,15 @@ import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import personService from './services/entries'
 import RemoveButton from './components/RemoveButton'
+import Notification from './components/Notification'
 
 const App = () => {
   const [ persons, setPersons] = useState([]) 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ filter, setNewFilter ] = useState('')
+  const [ notificationMessage, setNotificationMessage] = useState(null)
+  const [ notificationType, setNotificationType] = useState(null)
 
   useEffect(()=> {
     console.log('Effect: getting initial data')
@@ -19,6 +22,7 @@ const App = () => {
       .then(initialPersons => {
         setPersons(initialPersons)
       })
+      .catch(error => notify('error', `Virhe: ${error}`))
   }, [])
 
   const handleNameChange = (event) =>{
@@ -34,6 +38,15 @@ const App = () => {
   const handleFilterChange = (event) => {
     //console.log(event.target.value)
     setNewFilter(event.target.value)
+  }
+
+  const notify = (type, message) => {
+    console.log(type, ': ', message);
+    setNotificationType(type)
+    setNotificationMessage(message)
+    setTimeout(()=> {
+       setNotificationMessage(null)
+    }, 5000)
   }
 
   const addName = (event) => {
@@ -55,6 +68,7 @@ const App = () => {
             .then(returnedPerson =>{
               setPersons(persons.map(entry =>{
                 if(entry.id === returnedPerson.id){
+                  notify(`Muokattiin, ${returnedPerson.name}`)
                   return(returnedPerson)
                 }
                 else{
@@ -62,6 +76,7 @@ const App = () => {
                 }
               }))
             })
+            .catch(error => notify('error', `Virhe: henkilön ${person.name} muokkaaminen epäonnistui`))
         }
         exists = true
       }
@@ -76,7 +91,9 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
+          notify("notification", `Lisättiin ${returnedPerson.name}`)
         })
+        .catch(error => notify('error', `Virhe: henkilön ${personObject.name} lisääminen epäonnistui`))
       }
     }
 
@@ -87,7 +104,9 @@ const App = () => {
         .remove(person.id)
         .then(returnedId =>{
           setPersons(persons.filter(person => person.id !== returnedId))
+          notify("notification", `poistettiin ${person.name}`)
         })
+        .catch(error => notify('error', `Virhe: Henkilö ${person.name} oli jo poistettu.`))
     }
     
   }
@@ -102,6 +121,7 @@ const App = () => {
   return (
     <div>
       <h2>Puhelinluettelo</h2>
+        <Notification message={notificationMessage} messageClass={notificationType}/>
         <Filter filter={filter} handleFilterChange={handleFilterChange}/>
       <h3>Lisää uusi</h3>
         <PersonForm 
