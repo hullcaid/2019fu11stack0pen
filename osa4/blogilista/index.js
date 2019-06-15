@@ -1,9 +1,11 @@
+require('dotenv').config();
 const http = require('http');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
+
 
 const blogSchema = mongoose.Schema({
 	title: String,
@@ -38,7 +40,7 @@ app.post('/api/blogs', (request, response) => {
 		});
 });
 
-const PORT = 3003;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}`);
 });
