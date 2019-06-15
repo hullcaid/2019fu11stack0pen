@@ -76,7 +76,7 @@ const App = () => {
                 }
               }))
             })
-            .catch(error => notify('error', `Virhe: henkilön ${person.name} muokkaaminen epäonnistui`))
+            .catch(error => notify('error', error.response.data.error))
         }
         exists = true
       }
