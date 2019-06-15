@@ -93,7 +93,10 @@ const App = () => {
           setNewNumber('')
           notify("notification", `Lisättiin ${returnedPerson.name}`)
         })
-        .catch(error => notify('error', `Virhe: henkilön ${personObject.name} lisääminen epäonnistui`))
+        .catch(error => {
+          console.log(error.response.data)
+          notify('error', error.response.data.error)
+        })
       }
     }
 
