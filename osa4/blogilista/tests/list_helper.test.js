@@ -55,7 +55,7 @@ test('dummy returns one', () => {
 	expect(listHelper.dummy([])).toBe(1);
 });
 
-describe('TotalLikes', () => {
+describe('totalLikes', () => {
 
 	test('of empty list is zero', () => {
 		expect(listHelper.totalLikes([])).toBe(0);
@@ -66,5 +66,29 @@ describe('TotalLikes', () => {
 		expect(listHelper.totalLikes(singleBlog)).toBe(blogs[5].likes);
 	});
 
+	test('of a bigger list is calculated right', () => {
+		expect(listHelper.totalLikes(blogs)).toBe(7+5+12+10+0+2);
+	});
+});
 
+describe.only('favoriteBlog', () => {
+	test('of empty list is empty array', () => {
+		expect(listHelper.favoriteBlog([])).toEqual([]);
+	});
+
+	test('of list with one blog to be that blog', () => {
+		const singleBlog = blogs.filter((blog) => { return blog.title === 'Type wars'; });
+		expect(listHelper.favoriteBlog(singleBlog)).toEqual({
+			'title': 'Type wars',
+			'author': 'Robert C. Martin',
+			'likes': 2,
+		});
+	});
+	test('of a longer list return information from the most liked', () => {
+		expect(listHelper.favoriteBlog(blogs)).toEqual({
+			'title':'Canonical string reduction',
+			'author': 'Edsger W. Dijkstra',
+			'likes': 12,
+		});
+	});
 });

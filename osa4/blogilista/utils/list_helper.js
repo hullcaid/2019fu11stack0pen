@@ -25,7 +25,27 @@ const totalLikes = (blogs) => {
 	return total;
 };
 
+const favoriteBlog = (blogs) => {
+	if (blogs.length === 0) {
+		return [];
+	}
+
+	const blogToReturn = {
+		'title': '',
+		'author': 'String',
+		'likes': 0,
+	};
+
+	blogs.forEach(blog => {
+		if (blog.likes > blogToReturn.likes){
+			blogToReturn.title = blog.title;
+			blogToReturn.author = blog.author;
+			blogToReturn.likes = blog.likes;
+		}
+	});
+	return blogToReturn;
+};
 
 module.exports = {
-	dummy, totalLikes
+	dummy, totalLikes, favoriteBlog
 };
